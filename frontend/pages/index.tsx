@@ -17,11 +17,14 @@ const Home: NextPage = () => {
   const [todos, setTodos] = useState<string[]>([]);
   const [text, setText] = useState("");
 
-  console.log(text);
+  const createTodo = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
+    setTodos([...todos, text]);
+  };
 
   return (
     <div className={styles.container}>
-      {/* <FormControl variant="standard" onSubmit={createTodo}>
+      <form onSubmit={createTodo}>
         <Input
           id="input-with-icon-adornment"
           startAdornment={
@@ -33,12 +36,12 @@ const Home: NextPage = () => {
           onChange={(e) => setText(e.target.value)}
         />
         <Button onClick={createTodo}>追加</Button>
-      </FormControl>
+      </form>
       <div>
         {todos.map((todo) => (
           <p key={todo}>{todo}</p>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
