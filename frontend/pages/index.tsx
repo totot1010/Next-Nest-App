@@ -12,18 +12,30 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import { uuid } from "uuidv4";
+
+type Todo = {
+  text: string;
+  id: string;
+};
 
 const Home: NextPage = () => {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [text, setText] = useState("");
+
+  console.log(todos);
 
   const createTodo = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
-    setTodos([...todos, text]);
+    setTodos([...todos, { text: text, id: uuid() }]);
   };
 
+  const editTodo = (id: string) => {};
+
+  const deleteTodo = () => {};
+
   return (
-    <div className={styles.container}>
+    <div>
       <form onSubmit={createTodo}>
         <Input
           id="input-with-icon-adornment"
@@ -39,7 +51,11 @@ const Home: NextPage = () => {
       </form>
       <div>
         {todos.map((todo, i) => (
-          <p key={i}>{todo}</p>
+          <div key={i} style={{ display: "flex" }}>
+            <p style={{ margin: 0 }}>{todo.text}</p>
+            <Button onClick={() => editTodo(todo.id)}>編集</Button>
+            <Button onClick={deleteTodo}>削除</Button>
+          </div>
         ))}
       </div>
     </div>
