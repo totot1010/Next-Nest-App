@@ -38,8 +38,8 @@ const Home: NextPage = () => {
         <Button onClick={createTodo}>追加</Button>
       </form>
       <div>
-        {todos.map((todo) => (
-          <p key={todo}>{todo}</p>
+        {todos.map((todo, i) => (
+          <p key={i}>{todo}</p>
         ))}
       </div>
     </div>
