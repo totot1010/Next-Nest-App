@@ -1,16 +1,6 @@
 import React, { useState } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import { Box, Button, Input, InputAdornment, TextField } from "@mui/material";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { uuid } from "uuidv4";
 
@@ -21,18 +11,28 @@ type Todo = {
 
 const Home: NextPage = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>("");
+  const [editId, setEditId] = useState<string>();
+  const [editTodo, setEditTodo] = useState<string>();
 
   console.log(todos);
 
-  const createTodo = (e: React.FormEvent<HTMLElement>) => {
+  const createTodo = (e: React.FormEvent<HTMLElement>): void => {
     e.preventDefault();
     setTodos([...todos, { text: text, id: uuid() }]);
   };
 
-  const editTodo = (id: string) => {};
+  const handleEdit = (id: string, text: string) => {
+    setEditId(id);
+    setEditTodo(text);
+  };
 
-  const deleteTodo = () => {};
+  const updateTodo = (e: any) => {
+    e.preventDefault();
+    // const newTodo = Todo.filter((todo) => )
+  };
+
+  // const deleteTodo = () => {};
 
   return (
     <div>
@@ -50,13 +50,29 @@ const Home: NextPage = () => {
         <Button onClick={createTodo}>追加</Button>
       </form>
       <div>
-        {todos.map((todo, i) => (
-          <div key={i} style={{ display: "flex" }}>
-            <p style={{ margin: 0 }}>{todo.text}</p>
-            <Button onClick={() => editTodo(todo.id)}>編集</Button>
-            <Button onClick={deleteTodo}>削除</Button>
-          </div>
-        ))}
+        {todos.map((todo, i) => {
+          return todo.id === editId ? (
+            <div key={i} style={{ display: "flex" }}>
+              <TextField
+                style={{ margin: 0 }}
+                value={editTodo}
+                onChange={(e) => setEditTodo(e.target.value)}
+              >
+                {todo.text}
+              </TextField>
+              <Button onClick={updateTodo}>保存</Button>
+              <Button onClick={() => setEditId("id")}>キャンセル</Button>
+            </div>
+          ) : (
+            <div key={i} style={{ display: "flex" }}>
+              <p style={{ margin: 0 }}>{todo.text}</p>
+              <Button onClick={() => handleEdit(todo.id, todo.text)}>
+                編集
+              </Button>
+              {/* <Button onClick={deleteTodo}>削除</Button> */}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
