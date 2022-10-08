@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import { Box, Button, Input, InputAdornment, TextField } from "@mui/material";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import { uuid } from "uuidv4";
-
+import { v4 as uuid } from "uuid";
+import { Droppable, DragDropContext } from "react-beautiful-dnd";
 type Todo = {
   text: string;
   id: string;
@@ -17,7 +17,11 @@ const Home: NextPage = () => {
 
   const createTodo = (e: React.FormEvent<HTMLElement>): void => {
     e.preventDefault();
+    if (!text) {
+      return;
+    }
     setTodos([...todos, { text: text, id: uuid() }]);
+    setText("");
   };
 
   const handleEdit = (id: string, text: string) => {
@@ -33,10 +37,20 @@ const Home: NextPage = () => {
     setEditId("");
   };
 
-  // const deleteTodo = () => {};
+  const deleteTodo = (id: string) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
+  };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
       <form onSubmit={createTodo}>
         <Input
           id="input-with-icon-adornment"
@@ -50,31 +64,27 @@ const Home: NextPage = () => {
         />
         <Button onClick={createTodo}>追加</Button>
       </form>
-      <div>
-        {todos.map((todo, i) => {
-          return todo.id === editId ? (
-            <div key={i} style={{ display: "flex" }}>
-              <TextField
-                style={{ margin: 0 }}
-                value={editTodo}
-                onChange={(e) => setEditTodo(e.target.value)}
-              >
-                {todo.text}
-              </TextField>
-              <Button onClick={updateTodo}>保存</Button>
-              <Button onClick={() => setEditId("id")}>キャンセル</Button>
-            </div>
-          ) : (
-            <div key={i} style={{ display: "flex" }}>
-              <p style={{ margin: 0 }}>{todo.text}</p>
-              <Button onClick={() => handleEdit(todo.id, todo.text)}>
-                編集
-              </Button>
-              {/* <Button onClick={deleteTodo}>削除</Button> */}
-            </div>
-          );
-        })}
-      </div>
+      {todos.map((todo, i) => {
+        return todo.id === editId ? (
+          <div key={i}>
+            <TextField
+              style={{ margin: 0 }}
+              value={editTodo}
+              onChange={(e) => setEditTodo(e.target.value)}
+            >
+              {todo.text}
+            </TextField>
+            <Button onClick={updateTodo}>保存</Button>
+            <Button onClick={() => setEditId("id")}>キャンセル</Button>
+          </div>
+        ) : (
+          <div key={i}>
+            <p style={{ margin: 0 }}>{todo.text}</p>
+            <Button onClick={() => handleEdit(todo.id, todo.text)}>編集</Button>
+            <Button onClick={() => deleteTodo(todo.id)}>削除</Button>
+          </div>
+        );
+      })}
     </div>
   );
 };
