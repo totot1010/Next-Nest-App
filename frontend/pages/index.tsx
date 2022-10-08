@@ -33,7 +33,10 @@ const Home: NextPage = () => {
     setEditId("");
   };
 
-  // const deleteTodo = () => {};
+  const deleteTodo = (id: string) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
+  };
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -70,7 +73,7 @@ const Home: NextPage = () => {
               <Button onClick={() => handleEdit(todo.id, todo.text)}>
                 編集
               </Button>
-              {/* <Button onClick={deleteTodo}>削除</Button> */}
+              <Button onClick={() => deleteTodo(todo.id)}>削除</Button>
             </div>
           );
         })}
