@@ -12,10 +12,8 @@ type Todo = {
 const Home: NextPage = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [text, setText] = useState<string>("");
-  const [editId, setEditId] = useState<string>();
-  const [editTodo, setEditTodo] = useState<string>();
-
-  console.log(todos);
+  const [editId, setEditId] = useState<string>("");
+  const [editTodo, setEditTodo] = useState<string>("");
 
   const createTodo = (e: React.FormEvent<HTMLElement>): void => {
     e.preventDefault();
@@ -27,15 +25,18 @@ const Home: NextPage = () => {
     setEditTodo(text);
   };
 
-  const updateTodo = (e: any) => {
+  const updateTodo = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
-    // const newTodo = Todo.filter((todo) => )
+    let updateTodo = todos.find((todo) => todo.id === editId);
+    updateTodo!.text = editTodo;
+    setTodos(todos);
+    setEditId("");
   };
 
   // const deleteTodo = () => {};
 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={createTodo}>
         <Input
           id="input-with-icon-adornment"
