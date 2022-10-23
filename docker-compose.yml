@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   backend:
+    platform: "linux/amd64"
     container_name: back
     build:
       context: .
@@ -18,6 +19,7 @@ services:
       - "5555:5555"
 
   frontend:
+    platform: "linux/amd64"
     container_name: front
     build:
       context: .

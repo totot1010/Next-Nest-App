@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -10,7 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
- model Todo {
-   id    Int     @id @default(autoincrement())
-   name  String
- }
+model Todo {
+  id      Int     @default(autoincrement()) @id
+  name   String
+}
