@@ -82,6 +82,7 @@ const Home: NextPage = () => {
             <p style={{ margin: 0 }}>{todo.text}</p>
             <Button onClick={() => handleEdit(todo.id, todo.text)}>編集</Button>
             <Button onClick={() => deleteTodo(todo.id)}>削除</Button>
+            <Button onClick={() => deleteTodo(todo.id)}>削除</Button>
           </div>
         );
       })}
